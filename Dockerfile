@@ -3,12 +3,15 @@ FROM golang:1.21-alpine AS builder
 
 WORKDIR /app
 
-# Copy go.mod file
-COPY go.mod ./
+# Create empty go.mod file if it doesn't exist
+RUN touch go.mod.tmp
 
-# Initialize go.mod and download dependencies
-# This approach doesn't require go.sum to exist
-RUN go mod download && go mod tidy
+# Copy go.mod (will overwrite the empty one if it exists)
+COPY go.mod go.mod.tmp
+RUN if [ -s go.mod.tmp ]; then mv go.mod.tmp go.mod; else echo "module helloworld\n\ngo 1.21" > go.mod; fi
+
+# Initialize the module and dependencies
+RUN go mod tidy
 
 # Copy source code
 COPY . .
