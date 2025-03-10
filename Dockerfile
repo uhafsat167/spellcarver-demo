@@ -6,11 +6,9 @@ WORKDIR /app
 # Copy go.mod file
 COPY go.mod ./
 
-# Copy go.sum file if it exists (will not fail if missing)
-COPY go.sum* ./
-
-# Download dependencies
-RUN go mod download
+# Initialize go.mod and download dependencies
+# This approach doesn't require go.sum to exist
+RUN go mod download && go mod tidy
 
 # Copy source code
 COPY . .
