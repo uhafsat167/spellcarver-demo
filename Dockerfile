@@ -27,5 +27,21 @@ WORKDIR /app
 # Copy the binary from the builder stage
 COPY --from=builder /app/helloworld .
 
+# SECURITY DEMO - DO NOT DO THIS IN REAL LIFE!
+# Setting hardcoded credentials (intentionally bad practice for demo)
+ENV API_KEY="hunter2_obviously_a_bad_password"
+ENV API_SECRET="admin123_so_secure_much_wow"
+ENV DB_PASSWORD="correct_horse_battery_staple"
+
+# Create credentials file with hardcoded values (extremely bad practice!)
+RUN echo '{ \
+  "api_key": "1234567890abcdef", \
+  "api_secret": "password123!_dont_use_this", \
+  "db_password": "letmein_security_nightmare" \
+}' > /app/credentials.json
+
+# Set credentials file path
+ENV CREDENTIALS_FILE="/app/credentials.json"
+
 # Run the application
 CMD ["./helloworld"]
