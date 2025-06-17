@@ -22,7 +22,7 @@ The application will be accessible at http://localhost:8080
 
 ### Prerequisites
 
-- Go 1.21 or later
+- Go 1.21 or later ##1.2.2
 
 ### Run the application
 
